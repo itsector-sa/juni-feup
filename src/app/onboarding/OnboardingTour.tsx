@@ -39,7 +39,7 @@ function useWaitForClick(selector: string, enabled: boolean, onOk: () => void) {
     if (!el) return;
     const handler = () => onOk();
     el.addEventListener("click", handler, { capture: true });
-    return () => el.removeEventListener("click", handler, { capture: true } as any);
+    return () => el.removeEventListener("click", handler, { capture: true });
   }, [selector, enabled, onOk]);
 }
 
@@ -47,8 +47,8 @@ function useWaitForEvent(eventName: string, enabled: boolean, onOk: () => void) 
   React.useEffect(() => {
     if (!enabled) return;
     const handler = () => onOk();
-    window.addEventListener(eventName, handler as any);
-    return () => window.removeEventListener(eventName, handler as any);
+    window.addEventListener(eventName, handler as EventListener);
+    return () => window.removeEventListener(eventName, handler as EventListener);
   }, [eventName, enabled, onOk]);
 }
 

@@ -118,10 +118,10 @@ export function Spotlight({
 
   return (
     <div className="fixed inset-0 z-[95] pointer-events-none">
-      <div className={overlayClass} style={top as any} {...overlayProps} />
-      <div className={overlayClass} style={left as any} {...overlayProps} />
-      <div className={overlayClass} style={right as any} {...overlayProps} />
-      <div className={overlayClass} style={bottom as any} {...overlayProps} />
+      <div className={overlayClass} style={top as React.CSSProperties} {...overlayProps} />
+      <div className={overlayClass} style={left as React.CSSProperties} {...overlayProps} />
+      <div className={overlayClass} style={right as React.CSSProperties} {...overlayProps} />
+      <div className={overlayClass} style={bottom as React.CSSProperties} {...overlayProps} />
 
       <div
         className={cn("absolute rounded-[18px] pointer-events-none")}

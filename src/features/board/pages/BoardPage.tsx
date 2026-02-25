@@ -112,7 +112,7 @@ function SortableCard({
 
 function ColumnView({
   title,
-  id,
+  id: _id,
   cards,
   selectedId,
   setSelectedId,

@@ -1,7 +1,18 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
   "files": {
-    "includes": ["**", "!dist", "!node_modules", "!coverage", "!src/index.css"]
+    "includes": [
+      "**",
+      "!dist",
+      "!node_modules",
+      "!coverage",
+      "!src/index.css",
+      "!public/mockServiceWorker.js",
+      "!pnpm-lock.yaml",
+      "!playwright-report",
+      "!blob-report",
+      "!test-results"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -18,7 +29,12 @@
   },
   "linter": {
     "enabled": true,
-    "rules": { "recommended": true }
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off"
+      }
+    }
   },
   "javascript": {
     "formatter": {

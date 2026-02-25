@@ -8,15 +8,23 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 4173",
-    "typecheck": "tsc --noEmit",
     "check": "biome check .",
     "check:write": "biome check --write .",
+    "ci": "pnpm check && pnpm typecheck && pnpm test && pnpm build",
+    "dev": "vite --host 0.0.0.0 --port 5173",
     "format": "biome format --write .",
-    "ci": "pnpm check && pnpm typecheck && pnpm build",
-    "prepare": "husky"
+    "git:commit-msg": "commitlint --edit",
+    "git:pre-commit": "lint-staged && pnpm run typecheck",
+    "git:pre-push": "pnpm run test:coverage && pnpm run test:e2e",
+    "prepare": "husky",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -43,17 +51,25 @@
     "@biomejs/biome": "^2.4.4",
     "@commitlint/cli": "^20.4.2",
     "@commitlint/config-conventional": "^20.4.2",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.2.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "autoprefixer": "^10.4.24",
     "husky": "^9.1.7",
+    "jsdom": "^28.1.0",
     "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md,html}": [

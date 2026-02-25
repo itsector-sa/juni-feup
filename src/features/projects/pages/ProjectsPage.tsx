@@ -30,8 +30,8 @@ export function ProjectsPage() {
 
   React.useEffect(() => {
     const handler = () => setEditing({ id: "", name: "", description: "" });
-    window.addEventListener("projects:new", handler as any);
-    return () => window.removeEventListener("projects:new", handler as any);
+    window.addEventListener("projects:new", handler as EventListener);
+    return () => window.removeEventListener("projects:new", handler as EventListener);
   }, []);
 
   // Open new-project form when navigated here with { state: { openNew: true } }

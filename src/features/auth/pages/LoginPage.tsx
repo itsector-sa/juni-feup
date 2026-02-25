@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useToastStore } from "../../../app/toast/toastStore";
@@ -34,7 +33,7 @@ export function LoginPage() {
         <CardHeader>
           <div className="text-xl font-extrabold text-slate-900 dark:text-white">juni-feup</div>
           <div className="text-sm text-slate-600 dark:text-slate-300">
-            Login (mock) — patterns + wow UX
+            Login (mock) — patterns + Better UX
           </div>
         </CardHeader>
         <CardContent>

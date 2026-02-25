@@ -41,7 +41,7 @@ export function CommandPalette({
   ];
 
   const filtered = cmds.filter((c) =>
-    (c.title + " " + c.keywords).toLowerCase().includes(value.toLowerCase())
+    `${c.title} ${c.keywords}`.toLowerCase().includes(value.toLowerCase())
   );
 
   return (
