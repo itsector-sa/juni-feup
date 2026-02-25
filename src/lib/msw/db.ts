@@ -30,7 +30,7 @@ export type Activity = {
 const now = () => new Date().toISOString();
 const uid = (p: string) => `${p}_${crypto.randomUUID().slice(0, 8)}`;
 
-const demoUser = { id: "u_1", name: "Demo User", email: "demo@juni-feup.pt" };
+const demoUser = { id: "u_1", name: "Demo User", email: "juni-feup@itsector.pt" };
 
 let projects: Project[] = [
   {

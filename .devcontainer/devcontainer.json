@@ -1,5 +1,5 @@
 {
-  "name": "juni-feup",
+  "name": "itsector-sa/juni-feup-2026",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
