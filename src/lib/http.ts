@@ -1,7 +1,7 @@
-const githubPages = import.meta.env.GITHUB_PAGES;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export async function apiFetch(path: string, init?: RequestInit) {
-  const res = await fetch(import.meta.env.PROD ? `/juni-feup${path}` : path, {
+  const res = await fetch(`${base}${path}`, {
     ...init,
     headers: {
       "content-type": "application/json",

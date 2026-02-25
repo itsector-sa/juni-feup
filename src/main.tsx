@@ -9,9 +9,9 @@ async function enableMsw() {
   const { worker } = await import("./lib/msw/browser");
   await worker.start({
     serviceWorker: {
-      url: import.meta.env.PROD ? "/juni-feup/mockServiceWorker.js" : "/mockServiceWorker.js",
+      url: `${import.meta.env.BASE_URL}mockServiceWorker.js`,
     },
-    onUnhandledRequest: "bypass",
+    onUnhandledRequest: "warn",
   });
   // }
 }
