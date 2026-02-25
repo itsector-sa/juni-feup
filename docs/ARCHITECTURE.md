@@ -1,4 +1,4 @@
-# Architecture Notes — juni-feup
+# Architecture Notes — IT Sector | Juni FEUP
 
 Este documento explica o “porquê” da organização do projeto e os padrões usados.
 

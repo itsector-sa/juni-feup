@@ -60,7 +60,7 @@ export function DashboardPage() {
       <div>
         <div className="text-2xl font-extrabold text-slate-900 dark:text-white">Dashboard</div>
         <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-          Insights + charts + activity — product vibe
+          Insights + charts + activity
         </div>
       </div>
 

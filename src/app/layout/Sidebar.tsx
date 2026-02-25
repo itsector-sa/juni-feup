@@ -23,7 +23,7 @@ export function Sidebar() {
   const user = useAuthStore((s) => s.user);
 
   return (
-    <aside className="h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 flex flex-col">
+    <aside className="h-screen overflow-y-auto border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 flex flex-col">
       <div>
         <img src="/logo.png" alt="Logo" className="w-70 h-auto rounded-full" />
         {/* <div className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">

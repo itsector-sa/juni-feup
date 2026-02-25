@@ -36,11 +36,11 @@ export function AppShell() {
   }, [navigate]);
 
   return (
-    <div className="h-full grid grid-cols-[260px_1fr] bg-slate-50 dark:bg-slate-950">
+    <div className="h-screen overflow-hidden grid grid-cols-[260px_1fr] bg-slate-50 dark:bg-slate-950">
       <Sidebar />
-      <div className="min-w-0 flex flex-col">
+      <div className="min-w-0 min-h-0 flex flex-col">
         <Topbar />
-        <main className="min-w-0 flex-1 p-6 text-slate-900 dark:text-slate-100">
+        <main className="min-w-0 flex-1 overflow-y-auto p-6 text-slate-900 dark:text-slate-100">
           <Outlet />
         </main>
       </div>

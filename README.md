@@ -1,4 +1,4 @@
-# juni-feup
+# IT Sector | Juni FEUP
 
 Mini “SaaS-style” app para workshop/aula prática (React 19 + Vite) com padrões modernos de frontend:
 - **Auth** (client state com Zustand)
@@ -46,7 +46,7 @@ Este repo inclui `.devcontainer/` — basta criar um Codespace e correr `pnpm de
 Deploy automático via GitHub Actions em pushes/merges para `main`.
 
 URL final:
-`https://<teu-user>.github.io/juni-feup/`
+`https://itsector-sa.github.io/juni-feup/`
 
 Configurar 1x:
 Repo → Settings → Pages → Source: **GitHub Actions**

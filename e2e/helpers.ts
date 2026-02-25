@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 
-export const TEST_EMAIL = "demo@juni-feup.pt";
-export const TEST_PASSWORD = "demo";
+export const TEST_EMAIL = "juni-feup@itsector.pt";
+export const TEST_PASSWORD = "demo.juni-feup";
 
 /** Marks the onboarding tour as seen so it never blocks E2E interactions. */
 export async function skipOnboarding(page: Page) {

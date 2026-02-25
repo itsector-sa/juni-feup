@@ -1,4 +1,4 @@
-# Contributing — juni-feup
+# Contributing — IT Sector | Juni FEUP Workshops
 
 Obrigado por contribuires 🙌
 

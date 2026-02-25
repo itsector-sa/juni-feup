@@ -15,7 +15,7 @@ export function LoginPage() {
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(LoginSchema),
-    defaultValues: { email: "demo@juni-feup.pt", password: "demo" },
+    defaultValues: { email: "juni-feup@itsector.pt", password: "demo.juni-feup" },
   });
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -31,7 +31,12 @@ export function LoginPage() {
     <div className="min-h-screen grid place-items-center bg-slate-50 dark:bg-slate-950 p-6">
       <Card className="w-[520px] max-w-[95vw]">
         <CardHeader>
-          <div className="text-xl font-extrabold text-slate-900 dark:text-white">juni-feup</div>
+          <div>
+            <img src="/logo.png" alt="Logo" className="w-120 h-auto rounded-full" />
+          </div>
+          <div className="text-xl font-extrabold text-slate-900 dark:text-white">
+            IT Sector | Juni FEUP
+          </div>
           <div className="text-sm text-slate-600 dark:text-slate-300">
             Login (mock) — patterns + Better UX
           </div>
