@@ -33,7 +33,7 @@ export function LoginPage() {
         <CardHeader>
           <div>
             <img
-              src={import.meta.env.PROD ? "/juni-feup/logo.png" : "/logo.png"}
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt="Logo"
               className="w-120 h-auto rounded-full"
             />
