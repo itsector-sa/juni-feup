@@ -4,4 +4,5 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [tailwindcss(), react()],
+  base: process.env.GITHUB_PAGES ? "/juni-feup/" : "/",
 });
