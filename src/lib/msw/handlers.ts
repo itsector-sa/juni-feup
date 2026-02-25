@@ -1,8 +1,10 @@
 import { delay, HttpResponse, http } from "msw";
 import { db } from "./db";
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 export const handlers = [
-  http.post("/api/auth/login", async ({ request }) => {
+  http.post(`${base}/api/auth/login`, async ({ request }) => {
     await delay(350);
     const body = (await request.json()) as { email: string; password: string };
     if (!body.email || !body.password)
@@ -11,23 +13,23 @@ export const handlers = [
     return HttpResponse.json({ token: "demo-token", user: db.demoUser });
   }),
 
-  http.get("/api/dashboard/summary", async () => {
+  http.get(`${base}/api/dashboard/summary`, async () => {
     await delay(250);
     return HttpResponse.json(db.dashboardSummary());
   }),
 
-  http.get("/api/projects", async () => {
+  http.get(`${base}/api/projects`, async () => {
     await delay(250);
     return HttpResponse.json(db.listProjects());
   }),
 
-  http.post("/api/projects", async ({ request }) => {
+  http.post(`${base}/api/projects`, async ({ request }) => {
     await delay(250);
     const body = (await request.json()) as { name: string; description?: string };
     return HttpResponse.json(db.createProject(body));
   }),
 
-  http.put("/api/projects/:id", async ({ params, request }) => {
+  http.put(`${base}/api/projects/:id`, async ({ params, request }) => {
     await delay(250);
     const body = (await request.json()) as { name: string; description?: string };
     const updated = db.updateProject(String(params.id), body);
@@ -35,24 +37,24 @@ export const handlers = [
     return HttpResponse.json(updated);
   }),
 
-  http.delete("/api/projects/:id", async ({ params }) => {
+  http.delete(`${base}/api/projects/:id`, async ({ params }) => {
     await delay(250);
     db.deleteProject(String(params.id));
     return HttpResponse.json({ ok: true });
   }),
 
-  http.get("/api/projects/:id/board", async ({ params }) => {
+  http.get(`${base}/api/projects/:id/board`, async ({ params }) => {
     await delay(250);
     return HttpResponse.json(db.listCards(String(params.id)));
   }),
 
-  http.post("/api/projects/:id/cards", async ({ params, request }) => {
+  http.post(`${base}/api/projects/:id/cards`, async ({ params, request }) => {
     await delay(250);
     const body = (await request.json()) as { title: string };
     return HttpResponse.json(db.createCard(String(params.id), body.title));
   }),
 
-  http.post("/api/cards/:id/move", async ({ params, request }) => {
+  http.post(`${base}/api/cards/:id/move`, async ({ params, request }) => {
     await delay(250);
     const body = (await request.json()) as { toColumn: "todo" | "doing" | "done" };
     const ok = db.moveCard(String(params.id), body.toColumn);
