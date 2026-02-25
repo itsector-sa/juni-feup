@@ -7,7 +7,12 @@ import "./index.css";
 async function enableMsw() {
   // if (import.meta.env.DEV) {
   const { worker } = await import("./lib/msw/browser");
-  await worker.start({ onUnhandledRequest: "bypass" });
+  await worker.start({
+    serviceWorker: {
+      url: import.meta.env.PROD ? "/juni-feup/mockServiceWorker.js" : "/mockServiceWorker.js",
+    },
+    onUnhandledRequest: "bypass",
+  });
   // }
 }
 
