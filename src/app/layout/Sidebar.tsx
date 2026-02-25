@@ -36,7 +36,7 @@ export function Sidebar() {
         {/* <div className="text-xs text-slate-500 mt-1 dark:text-slate-400">Workshop</div> */}
       </div>
 
-      <nav className="space-y-1">
+      <nav className="space-y-4">
         <Item to="/dashboard" label="Dashboard" />
         <div data-spotlight="projects-nav">
           <Item to="/projects" label="Projects" />
