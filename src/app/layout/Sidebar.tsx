@@ -25,7 +25,11 @@ export function Sidebar() {
   return (
     <aside className="h-screen overflow-y-auto border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 flex flex-col">
       <div>
-        <img src="/logo.png" alt="Logo" className="w-70 h-auto rounded-full" />
+        <img
+          src={import.meta.env.PROD ? "/juni-feup/logo.png" : "/logo.png"}
+          alt="Logo"
+          className="w-70 h-auto rounded-full"
+        />
         {/* <div className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">
           juni-feup
         </div> */}
