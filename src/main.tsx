@@ -5,10 +5,10 @@ import { AppProviders } from "./app/providers";
 import "./index.css";
 
 async function enableMsw() {
-  if (import.meta.env.DEV) {
-    const { worker } = await import("./lib/msw/browser");
-    await worker.start({ onUnhandledRequest: "bypass" });
-  }
+  // if (import.meta.env.DEV) {
+  const { worker } = await import("./lib/msw/browser");
+  await worker.start({ onUnhandledRequest: "bypass" });
+  // }
 }
 
 const root = document.getElementById("root");
