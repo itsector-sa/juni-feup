@@ -32,7 +32,11 @@ export function LoginPage() {
       <Card className="w-[520px] max-w-[95vw]">
         <CardHeader>
           <div>
-            <img src="/logo.png" alt="Logo" className="w-120 h-auto rounded-full" />
+            <img
+              src={import.meta.env.PROD ? "/juni-feup/logo.png" : "/logo.png"}
+              alt="Logo"
+              className="w-120 h-auto rounded-full"
+            />
           </div>
           <div className="text-xl font-extrabold text-slate-900 dark:text-white">
             IT Sector | Juni FEUP
