@@ -40,7 +40,6 @@ jobs:
       - name: Build
         env:
           GITHUB_PAGES: "true"
-          BASE_URL: "/juni-feup/"
         run: pnpm build
 
       - name: Upload Pages artifact
