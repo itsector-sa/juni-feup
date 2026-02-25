@@ -27,7 +27,7 @@ const STEPS = [
     title: "3) Criar um card (Ctrl/⌘+Enter)",
     desc: "Clica no Quick Add, escreve um título e usa Ctrl/⌘+Enter. O tour só termina quando o card for criado.",
     selector: '[data-spotlight="quick-add"]',
-    goTo: "/projects",
+    goTo: "projects/p_f0938f00/board",
     advance: { type: "event" as const, name: "board:card-created" },
   },
 ];
@@ -70,20 +70,26 @@ export function OnboardingTour() {
 
   React.useEffect(() => {
     if (seen) return;
-    if (loc.pathname.startsWith("/dashboard") || loc.pathname.startsWith("/projects")) start();
+    if (loc.pathname.startsWith("/dashboard")) {
+      start();
+    }
   }, [seen, loc.pathname, start]);
 
   React.useEffect(() => {
     if (seen) return;
     if (s.key === "quick_add") {
-      window.dispatchEvent(new CustomEvent("tour:quickadd-start"));
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("tour:quickadd-start"));
+      }, 300);
     }
   }, [seen, s.key]);
 
   const advance = React.useCallback(() => {
     if (step === maxStep) {
       complete();
+
       fireMicroConfetti();
+
       toast({ kind: "success", title: "Tour completed", message: "Now build like a product 🚀" });
     } else {
       next(maxStep);
@@ -96,16 +102,17 @@ export function OnboardingTour() {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         skip();
+
         toast({ kind: "info", title: "Tour skipped" });
       } else if (e.key === "ArrowLeft") {
         prev();
       } else if (e.key === "ArrowRight") {
-        if (step < maxStep) next(maxStep);
+        advance();
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [seen, skip, prev, next, step, maxStep, toast]);
+  }, [seen, skip, prev, advance, toast]);
 
   useWaitForClick(s.selector, !seen && s.advance.type === "click", advance);
   useWaitForEvent(
@@ -125,7 +132,9 @@ export function OnboardingTour() {
       radius={18}
       onMissingTarget={() => {
         const to = s.goTo;
-        if (to && loc.pathname !== to) nav(to);
+        if (to && loc.pathname !== to) {
+          nav(to);
+        }
       }}
       onBackdropClick={() => {
         // keep backdrop click non-advancing for "game" mode
@@ -133,7 +142,7 @@ export function OnboardingTour() {
     >
       {() => (
         <>
-          <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between w-auto">
             <div>
               <div className="text-sm font-extrabold text-slate-900 dark:text-white">
                 Quick Tour — {s.title}
@@ -148,7 +157,7 @@ export function OnboardingTour() {
                 </b>
               </div>
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">{progress}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 w-12">{progress}</div>
           </div>
 
           <div className="p-5 flex items-center justify-between gap-3">
@@ -162,6 +171,7 @@ export function OnboardingTour() {
                 className="text-xs font-semibold px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900"
                 onClick={() => {
                   skip();
+
                   toast({ kind: "info", title: "Tour skipped" });
                 }}
               >
@@ -181,12 +191,10 @@ export function OnboardingTour() {
                 type="button"
                 className="text-xs font-semibold px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                 onClick={() => {
-                  if (step === maxStep) return;
-                  next(maxStep);
+                  advance();
                 }}
-                disabled={step === maxStep}
               >
-                Next
+                {step === maxStep ? "Finish" : "Next"}
               </button>
             </div>
           </div>
