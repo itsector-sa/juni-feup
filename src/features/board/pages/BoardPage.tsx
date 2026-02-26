@@ -268,6 +268,7 @@ export function BoardPage() {
         message: "Use Ctrl/⌘ + Enter to create instantly.",
         durationMs: 2500,
       });
+
       setTimeout(
         () => (document.getElementById("quick-add") as HTMLInputElement | null)?.focus(),
         50

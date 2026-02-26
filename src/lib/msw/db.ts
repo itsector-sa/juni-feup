@@ -34,7 +34,7 @@ const demoUser = { id: "u_1", name: "Demo User", email: "juni-feup@itsector.pt" 
 
 let projects: Project[] = [
   {
-    id: uid("p"),
+    id: "p_f0938f00", //uid("p"),
     name: "Workshop",
     description: "Starter project",
     createdAt: now(),

@@ -5,7 +5,7 @@ import { ThemeSync } from "./theme/ThemeSync";
 import { ToastViewport } from "./toast/ToastViewport";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false } },
+  defaultOptions: { queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: true } },
 });
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
