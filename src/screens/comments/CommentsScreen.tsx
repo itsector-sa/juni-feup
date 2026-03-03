@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getCoreRowModel,
@@ -10,7 +10,14 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import { toast } from "sonner";
-import { Plus, Search, Pencil, Trash2, ArrowUpDown, ArrowLeft } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Pencil,
+  Trash2,
+  ArrowUpDown,
+  ArrowLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +45,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-table/DataTable";
-import { useGetPost } from "@/services/posts/usePosts";
+import { useGetPost } from "@/services/posts/useGetPost";
 import {
   useGetComments,
   useDeleteComment,
@@ -53,9 +60,17 @@ export default function CommentsScreen() {
 
   const {
     data: post,
-    isLoading: isPostLoading,
-    isError: isPostError,
+    loading: isPostLoading,
+    error: postError,
+    fetch: fetchPost,
   } = useGetPost(postId);
+
+  useEffect(() => {
+    if (postId > 0) fetchPost();
+  }, [postId]);
+
+  const isPostError = !!postError;
+
   const {
     data: comments = [],
     isLoading: isCommentsLoading,

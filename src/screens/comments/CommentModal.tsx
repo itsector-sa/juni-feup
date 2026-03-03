@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useState } from "react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -11,14 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -28,67 +18,73 @@ import {
 } from "@/services/comments/useComments";
 import type { Comment } from "@/types";
 
-const commentSchema = z.object({
-  postId: z
-    .number()
-    .int()
-    .min(1, "Min post ID is 1")
-    .max(100, "Max post ID is 100"),
-  name: z
-    .string()
-    .min(3, "Name must be at least 3 characters")
-    .max(100, "Name must be at most 100 characters"),
-  email: z.string().email("Must be a valid email address"),
-  body: z
-    .string()
-    .min(10, "Body must be at least 10 characters")
-    .max(500, "Body must be at most 500 characters"),
-});
-
-type CommentFormValues = z.infer<typeof commentSchema>;
-
 interface CommentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   comment?: Comment;
 }
 
-export function CommentModal({
-  open,
-  onOpenChange,
+const defaultValues = { postId: 1, name: "", email: "", body: "" };
+
+type CommentErrors = Partial<
+  Record<"postId" | "name" | "email" | "body", string>
+>;
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateComment(values: {
+  postId: number;
+  name: string;
+  email: string;
+  body: string;
+}): CommentErrors {
+  const errors: CommentErrors = {};
+  if (values.postId < 1 || values.postId > 100) {
+    errors.postId = "Post ID must be between 1 and 100";
+  }
+  if (values.name.length < 3) {
+    errors.name = "Name must be at least 3 characters";
+  } else if (values.name.length > 100) {
+    errors.name = "Name must be at most 100 characters";
+  }
+  if (!EMAIL_REGEX.test(values.email)) {
+    errors.email = "Must be a valid email address";
+  }
+  if (values.body.length < 10) {
+    errors.body = "Body must be at least 10 characters";
+  } else if (values.body.length > 500) {
+    errors.body = "Body must be at most 500 characters";
+  }
+  return errors;
+}
+
+function CommentFormContent({
   comment,
-}: CommentModalProps) {
+  onOpenChange,
+}: {
+  comment?: Comment;
+  onOpenChange: (open: boolean) => void;
+}) {
   const isEditing = !!comment;
+  const [postId, setPostId] = useState(comment?.postId ?? defaultValues.postId);
+  const [name, setName] = useState(comment?.name ?? defaultValues.name);
+  const [email, setEmail] = useState(comment?.email ?? defaultValues.email);
+  const [body, setBody] = useState(comment?.body ?? defaultValues.body);
+  const [errors, setErrors] = useState<CommentErrors>({});
 
   const createComment = useCreateComment();
   const updateComment = useUpdateComment();
 
-  const form = useForm<CommentFormValues>({
-    resolver: zodResolver(commentSchema),
-    defaultValues: {
-      postId: 1,
-      name: "",
-      email: "",
-      body: "",
-    },
-  });
-
-  useEffect(() => {
-    if (open) {
-      if (comment) {
-        form.reset({
-          postId: comment.postId,
-          name: comment.name,
-          email: comment.email,
-          body: comment.body,
-        });
-      } else {
-        form.reset({ postId: 1, name: "", email: "", body: "" });
-      }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const values = { postId, name, email, body };
+    const nextErrors = validateComment(values);
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
     }
-  }, [open, comment, form]);
+    setErrors({});
 
-  const onSubmit = (values: CommentFormValues) => {
     if (isEditing && comment) {
       updateComment.mutate(
         { ...values, id: comment.id },
@@ -114,6 +110,113 @@ export function CommentModal({
   const isPending = createComment.isPending || updateComment.isPending;
 
   return (
+    <form onSubmit={handleSubmit} className="space-y-4 py-2">
+      <div className="grid gap-2">
+        <Label htmlFor="comment-postId">Post ID</Label>
+        <Input
+          id="comment-postId"
+          type="number"
+          min={1}
+          max={100}
+          placeholder="1–100"
+          value={postId}
+          onChange={(e) => {
+            const v = parseInt(e.target.value, 10);
+            setPostId(isNaN(v) ? 1 : v);
+            if (errors.postId) setErrors((e) => ({ ...e, postId: undefined }));
+          }}
+          aria-invalid={!!errors.postId}
+        />
+        {errors.postId && (
+          <p className="text-sm text-destructive">{errors.postId}</p>
+        )}
+      </div>
+
+      <div className="grid gap-2">
+        <Label htmlFor="comment-name">Name</Label>
+        <Input
+          id="comment-name"
+          placeholder="Enter commenter's name…"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (errors.name) setErrors((e) => ({ ...e, name: undefined }));
+          }}
+          aria-invalid={!!errors.name}
+        />
+        {errors.name && (
+          <p className="text-sm text-destructive">{errors.name}</p>
+        )}
+      </div>
+
+      <div className="grid gap-2">
+        <Label htmlFor="comment-email">Email</Label>
+        <Input
+          id="comment-email"
+          type="email"
+          placeholder="commenter@example.com"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (errors.email) setErrors((e) => ({ ...e, email: undefined }));
+          }}
+          aria-invalid={!!errors.email}
+        />
+        {errors.email && (
+          <p className="text-sm text-destructive">{errors.email}</p>
+        )}
+      </div>
+
+      <div className="grid gap-2">
+        <Label htmlFor="comment-body">Body</Label>
+        <Textarea
+          id="comment-body"
+          placeholder="Write the comment content…"
+          className="min-h-[120px] resize-none"
+          value={body}
+          onChange={(e) => {
+            setBody(e.target.value);
+            if (errors.body) setErrors((e) => ({ ...e, body: undefined }));
+          }}
+          aria-invalid={!!errors.body}
+        />
+        {errors.body && (
+          <p className="text-sm text-destructive">{errors.body}</p>
+        )}
+      </div>
+
+      <DialogFooter>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => onOpenChange(false)}
+          disabled={isPending}
+        >
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending
+            ? isEditing
+              ? "Saving…"
+              : "Creating…"
+            : isEditing
+              ? "Save Changes"
+              : "Create Comment"}
+        </Button>
+      </DialogFooter>
+    </form>
+  );
+}
+
+export function CommentModal({
+  open,
+  onOpenChange,
+  comment,
+}: CommentModalProps) {
+  const isEditing = !!comment;
+  const formKey = open ? (comment ? `edit-${comment.id}` : "new") : "closed";
+
+  return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[520px]">
         <DialogHeader>
@@ -126,107 +229,11 @@ export function CommentModal({
               : "Fill in the fields below to create a new comment."}
           </DialogDescription>
         </DialogHeader>
-
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 py-2"
-          >
-            <FormField
-              control={form.control}
-              name="postId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Post ID</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min={1}
-                      max={100}
-                      placeholder="1–100"
-                      value={field.value}
-                      onChange={(e) => {
-                        const v = parseInt(e.target.value, 10);
-                        field.onChange(isNaN(v) ? "" : v);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter commenter's name…" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="commenter@example.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="body"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Body</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Write the comment content…"
-                      className="min-h-[120px] resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isPending}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isPending}>
-                {isPending
-                  ? isEditing
-                    ? "Saving…"
-                    : "Creating…"
-                  : isEditing
-                    ? "Save Changes"
-                    : "Create Comment"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <CommentFormContent
+          key={formKey}
+          comment={comment}
+          onOpenChange={onOpenChange}
+        />
       </DialogContent>
     </Dialog>
   );

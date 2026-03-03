@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getCoreRowModel,
@@ -39,14 +39,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-table/DataTable";
-import { useGetPosts, useDeletePost } from "@/services/posts/usePosts";
+import { useGetPosts } from "@/services/posts/useGetPosts";
+import { useDeletePost } from "@/services/posts/useDeletePost";
 import type { Post } from "@/types";
 import { PostModal } from "./PostModal";
 
 export default function PostsScreen() {
-  const { data: posts = [], isLoading, isError } = useGetPosts();
+  const { data: posts = [], fetch: fetchPosts, loading, error } = useGetPosts();
   const deletePost = useDeletePost();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -68,18 +73,16 @@ export default function PostsScreen() {
     setDeletingPostId(id);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deletingPostId === null) return;
-    deletePost.mutate(deletingPostId, {
-      onSuccess: () => {
-        toast.success("Post deleted successfully");
-        setDeletingPostId(null);
-      },
-      onError: () => {
-        toast.error("Failed to delete post");
-        setDeletingPostId(null);
-      },
-    });
+    try {
+      await deletePost.remove(deletingPostId);
+      toast.success("Post deleted successfully");
+      setDeletingPostId(null);
+    } catch {
+      toast.error("Failed to delete post");
+      setDeletingPostId(null);
+    }
   };
 
   const columns: ColumnDef<Post>[] = [
@@ -234,19 +237,19 @@ export default function PostsScreen() {
       </div>
 
       {/* States */}
-      {isLoading && (
+      {loading && (
         <div className="flex items-center justify-center h-48 text-muted-foreground">
           Loading posts…
         </div>
       )}
-      {isError && (
+      {error && (
         <div className="flex items-center justify-center h-48 text-destructive">
           Failed to load posts. Please try again.
         </div>
       )}
 
       {/* Table */}
-      {!isLoading && !isError && <DataTable table={table} />}
+      {!loading && !error && <DataTable table={table} />}
 
       {/* Create / Edit modal */}
       <PostModal
