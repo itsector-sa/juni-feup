@@ -39,7 +39,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-table/DataTable";
-import { useGetPosts, useDeletePost } from "@/services/posts/usePosts";
+import { useGetPosts, useDeletePost } from "@/services/posts";
 import type { Post } from "@/types";
 import { PostModal } from "./PostModal";
 

@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useCreatePost, useUpdatePost } from "@/services/posts/usePosts";
+import { useCreatePost, useUpdatePost } from "@/services/posts";
 import type { Post } from "@/types";
 
 const postSchema = z.object({
