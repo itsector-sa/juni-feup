@@ -167,13 +167,13 @@ export default function PostsScreen() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => navigate(`/posts/${post.id}/comments`)}
               >
                 <MessageSquare className="mr-2 h-4 w-4" />
                 View Comments
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator /> */}
               <DropdownMenuItem onClick={() => handleEdit(post)}>
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit

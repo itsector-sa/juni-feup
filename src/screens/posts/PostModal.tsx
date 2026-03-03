@@ -22,6 +22,8 @@ interface PostModalProps {
   post?: Post;
 }
 
+// TODO: 6 - Create zod schema for post validation and use it in PostFormContent instead of the custom validatePost function.
+
 const defaultValues = { userId: 1, title: "", body: "" };
 
 type PostErrors = Partial<Record<"userId" | "title" | "body", string>>;
@@ -56,6 +58,8 @@ function PostFormContent({
   onOpenChange: (open: boolean) => void;
 }) {
   const isEditing = !!post;
+
+  // TODO: 7 - Refactor to use react hook form (useForm) for better form state management and validation.
   const [userId, setUserId] = useState(post?.userId ?? defaultValues.userId);
   const [title, setTitle] = useState(post?.title ?? defaultValues.title);
   const [body, setBody] = useState(post?.body ?? defaultValues.body);
@@ -95,6 +99,8 @@ function PostFormContent({
 
   const isPending = createPost.loading || updatePost.loading;
 
+  // TODO: 8 - Refactor to use react-hoo-form (register) for better form state management.
+  // TODO: 9 - Refactor to use react-hoo-form (formState) for better validation and show errors.
   return (
     <form onSubmit={handleSubmit} className="space-y-4 py-2">
       <div className="grid gap-2">

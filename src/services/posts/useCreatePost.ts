@@ -2,6 +2,7 @@ import type { Post } from "@/types";
 import { useState } from "react";
 import { api } from "../api";
 
+// TODO: 3 - Refactor to use React Query for better caching.
 export const useCreatePost = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
